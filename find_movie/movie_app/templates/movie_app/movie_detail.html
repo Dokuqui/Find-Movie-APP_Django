@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>{{ movie.title }}</h1>
+    <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster">
     <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
     <p><strong>Duration:</strong> {{ movie.runtime }}</p>
     <p><strong>Genre:</strong> {{ movie.genre }}</p>

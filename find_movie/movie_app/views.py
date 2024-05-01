@@ -1,11 +1,17 @@
 """Import necessary libraries."""
+import os
+from datetime import datetime
 from django.shortcuts import render
 import requests
+from dotenv import load_dotenv
 from .models import Movie
-from datetime import datetime
+
+
+load_dotenv()
 
 
 def movie_app(request):
+    OMDB_API_KEY = os.getenv('OMDB_API_KEY')
     """View function for home page"""
     if request.method == 'POST':
         search_term = request.POST.get('title')
@@ -14,9 +20,9 @@ def movie_app(request):
             return render(request, 'movie_app/movie_detail.html', {'movie': movie})
         else:
             if search_term.isdigit():
-                api_url = 'http://www.omdbapi.com/?i=' + search_term + '&apikey=8dcbd9c7'
+                api_url = 'http://www.omdbapi.com/?i=' + search_term + f'&apikey={OMDB_API_KEY}'
             else:
-                api_url = 'http://www.omdbapi.com/?t=' + search_term + '&apikey=8dcbd9c7'
+                api_url = 'http://www.omdbapi.com/?t=' + search_term + f'&apikey={OMDB_API_KEY}'
 
             response = requests.get(api_url)
             data = response.json()
@@ -46,6 +52,12 @@ def movie_app(request):
                     plot=data['Plot'],
                     response=data['Type']
                 )
+
+                poster_url = data.get('Poster')
+                if poster_url:
+                    movie.poster_url = poster_url
+                    movie.save()
+
                 return render(request, 'movie_app/movie_detail.html', {'movie': movie})
             else:
                 return render(request, 'movie_app/error.html', {'message': 'No results found.'})
