@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@4
+      - uses: actions/checkout@v4
 
   lint:
     needs: build
@@ -25,10 +24,37 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: '3.11'
 
       - name: Install linter
         run: pip install flake8
 
       - name: Lint code
         run: flake8 .
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: [ build, lint ]
+    env:
+      OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+
+    steps:
+      - name: Reuse Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Set up test database
+        run: |
+          python manage.py migrate
+          python manage.py makemigrations
+          python manage.py migrate         
+
+      - name: Run tests
+        run: |
+          python manage.py test
