@@ -17,14 +17,22 @@ jobs:
 
   lint:
     needs: build
-
     runs-on: ubuntu-latest
-
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install linter
         run: pip install flake8
@@ -38,12 +46,21 @@ jobs:
     needs: [ build, lint ]
     env:
       OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
-
     steps:
+      - uses: actions/checkout@v4
+
       - name: Reuse Python setup
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
@@ -52,7 +69,6 @@ jobs:
 
       - name: Set up test database
         run: |
-          python manage.py migrate
           python manage.py makemigrations
           python manage.py migrate         
 
