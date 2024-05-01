@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Movie</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 </head>
 <body>
     <h1>Search Movie</h1>
     <form method="POST">
         {% csrf_token %}
-        <label for="title">Enter Movie Title or IMDb ID:</label><br>
+        <label for="title">Enter Movie Title or ID:</label><br>
         <input type="text" id="title" name="title" required><br><br>
         <button type="submit">Search</button>
     </form>

@@ -15,6 +15,7 @@ class Movie(models.Model):
     movie_id = models.CharField(max_length=255, unique=True, help_text="Enter the id of the movie.")
     imdb_id = models.CharField(max_length=255, unique=True, help_text="Enter the IMDb ID.")
     plot = models.TextField(blank=True, help_text="The plot of the movie.")
+    poster_url = models.URLField(max_length=500, blank=True, null=True)
     response = models.CharField(max_length=10, choices=[("JSON", "JSON"), ("XML", "XML")],
                                 default="JSON", blank=True)
 
