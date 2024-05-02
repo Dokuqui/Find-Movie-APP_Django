@@ -1,10 +1,15 @@
 """Import necessary libraries."""
 import os
 from datetime import datetime
+
+from django.core.mail import EmailMessage
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 import requests
 from dotenv import load_dotenv
+
+from .form import ContactForm
 from .models import Movie
 
 
@@ -72,3 +77,28 @@ def movie_app(request):
 def usage(request):
     """Render usage page."""
     return render(request, 'movie_app/usage.html')
+
+
+def contact(request):
+    """Render contact page."""
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            sender_email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            content = form.cleaned_data['content']
+            recipient_email = 'i.semenov6990@gmail.com'
+
+            email_message = EmailMessage(
+                subject=subject,
+                body=content,
+                from_email=sender_email,
+                to=[recipient_email],
+                reply_to=[sender_email]
+            )
+            email_message.send(fail_silently=False)
+
+            return HttpResponseRedirect('contact')
+    else:
+        form = ContactForm()
+    return render(request, 'movie_app/contact.html', {'form': form})

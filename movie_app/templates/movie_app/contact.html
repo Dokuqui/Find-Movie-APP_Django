@@ -2,9 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Contact - Film Hunt</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}">
 </head>
 <body>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Film Hunt">
+                Film Hunt
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'usage' %}">Usage</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <h1>Contact Us</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Film Hunt. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
