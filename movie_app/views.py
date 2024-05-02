@@ -17,6 +17,7 @@ load_dotenv()
 
 
 def movie_app(request):
+    """Search movies"""
     if request.method == 'POST':
         search_term = request.POST.get('title')
         if search_term:

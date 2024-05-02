@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,4 +145,5 @@ EMAIL_USE_TLS = True
 
 # Email Account
 EMAIL_HOST_USER = "i.semenov6990@gmail.com"
-EMAIL_HOST_PASSWORD = "xbpq srqv yjgg haue"
+GOOGLE_PASSWORD=os.getenv("GMAIL_PASSWORD")
+EMAIL_HOST_PASSWORD = GOOGLE_PASSWORD
