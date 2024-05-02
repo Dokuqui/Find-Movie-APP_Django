@@ -67,3 +67,8 @@ def movie_app(request):
             return render(request, 'movie_app/error.html', {'message': 'Search term cannot be empty.'})
     else:
         return render(request, 'movie_app/home.html')
+
+
+def usage(request):
+    """Render usage page."""
+    return render(request, 'movie_app/usage.html')

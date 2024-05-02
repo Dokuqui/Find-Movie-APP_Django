@@ -1,10 +1,42 @@
+<!-- usage.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usage - Film Hunt</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/usage.css' %}">
 </head>
 <body>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Film Hunt">
+                Film Hunt
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'usage' %}">Usage</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
 
+    <div class="content">
+        <h1>How to Use Film Hunt</h1>
+        <p>Here you will find some information about this website:</p>
+        <ul>
+            <li>This website was created to easily search for any movie for an evening or to watch something when you have time.</li>
+            <li>
+                To find a movie, you can simply enter the title of the film, and after that, you will see a brief explanation with actors and its poster.
+            </li>
+        </ul>
+    </div>
+
+
+    <footer>
+        <p>&copy; {% now "Y" %} Film Hunt. All rights reserved.</p>
+    </footer>
 </body>
 </html>
