@@ -8,9 +8,25 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/error.css' %}">
 </head>
 <body>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Film Hunt">
+                Film Hunt
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'usage' %}">Use</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
     <div class="error-message">
         <h1>Error</h1>
         <p>{{ message }}</p>
     </div>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Film Hunt. All rights reserved.</p>
+    </footer>
 </body>
 </html>

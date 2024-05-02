@@ -8,6 +8,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 </head>
 <body>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Film Hunt">
+                Film Hunt
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'usage' %}">Use</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
     <h1>Search Movie</h1>
     <form method="POST">
         {% csrf_token %}
@@ -15,5 +27,9 @@
         <input type="text" id="title" name="title" required><br><br>
         <button type="submit">Search</button>
     </form>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Film Hunt. All rights reserved.</p>
+    </footer>
 </body>
 </html>
