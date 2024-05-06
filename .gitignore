@@ -100,5 +100,3 @@ cython_debug/
 
 # PyCharm
 .idea/
-
-staticfiles/
