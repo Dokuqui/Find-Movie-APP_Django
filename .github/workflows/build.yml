@@ -85,6 +85,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
