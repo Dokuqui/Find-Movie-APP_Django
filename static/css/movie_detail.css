@@ -37,3 +37,22 @@ strong {
     margin: 0 auto;
     max-width: 600px;
 }
+
+.back-button {
+    display: flex;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.back-button a {
+    color: #333333;
+    text-decoration: none;
+    padding: 20px 20px;
+    border-radius: 5px;
+}
+
+.back-button span {
+    margin-left: 10px;
+    font-size: 22px;
+}
