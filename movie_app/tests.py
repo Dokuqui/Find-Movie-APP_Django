@@ -1,9 +1,8 @@
 """Import necessary libraries."""
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
-from django.core.mail import EmailMessage
 from unittest.mock import patch
-from .views import movie_app, usage, contact
+from .views import movie_app, usage
 from .models import Movie
 from .form import ContactForm
 from faker import Faker
