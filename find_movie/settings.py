@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "movie_app.apps.MovieAppConfig",
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "find_movie.urls"
@@ -140,3 +142,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "i.semenov6990@gmail.com"
 GOOGLE_PASSWORD = os.getenv("GMAIL_PASSWORD")
 EMAIL_HOST_PASSWORD = GOOGLE_PASSWORD
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    'https://film-hunt-f004e0776df0.herokuapp.com',
+]
