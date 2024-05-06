@@ -8,7 +8,7 @@ class Movie(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255, help_text="The title of the movie.")
     runtime = models.CharField(max_length=255, help_text="The duration of the movie.")
-    release_date = models.DateField(help_text="The date the movie was released.")
+    release_date = models.DateField(null=True, blank=True, help_text="The date the movie was released.")
     genre = models.CharField(max_length=255, help_text="The genre of the movie.")
     director = models.CharField(max_length=255, help_text="The director of the movie.")
     actors = models.CharField(max_length=255, help_text="The actors in the movie.")

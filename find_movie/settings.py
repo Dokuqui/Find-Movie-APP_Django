@@ -22,7 +22,7 @@ SECRET_KEY = \
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['film-hunt-f004e0776df0.herokuapp.com']
+ALLOWED_HOSTS = ['film-hunt-f004e0776df0.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition

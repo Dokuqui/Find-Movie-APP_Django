@@ -4,8 +4,11 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     padding: 20px;
-    display: flex;
+}
+
+.error {
     justify-content: center;
+    display: flex;
     align-items: center;
     height: 100vh;
 }

@@ -4,6 +4,7 @@ from datetime import datetime
 
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 import requests
@@ -99,7 +100,7 @@ def contact(request):
             )
             email_message.send(fail_silently=False)
 
-            return HttpResponseRedirect('contact')
+            return HttpResponseRedirect(reverse('home'))
     else:
         form = ContactForm()
     return render(request, 'movie_app/contact.html', {'form': form})

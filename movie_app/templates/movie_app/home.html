@@ -20,11 +20,11 @@
             <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
     </nav>
-    <h1>Search Movie</h1>
+    <h1>Find Your Movie</h1>
     <form method="POST">
         {% csrf_token %}
-        <label for="title">Enter Movie Title or ID:</label><br>
-        <input type="text" id="title" name="title" required><br><br>
+        <label for="title">Enter Movie Title:</label><br>
+        <input type="text" id="title" name="title" placeholder="ex. Star Wars" required><br><br>
         <button type="submit">Search</button>
     </form>
 
