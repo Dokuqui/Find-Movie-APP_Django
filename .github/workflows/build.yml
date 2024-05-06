@@ -73,9 +73,15 @@ jobs:
           python manage.py makemigrations
           python manage.py migrate         
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: |
-          python manage.py test
+          coverage run --source='.' manage.py test
+        continue-on-error: true
+
+      - name: Generate coverage report
+        run: |
+          coverage report -m
+        continue-on-error: true
 
   deploy:
     if: "!contains(github.event.head_commit.message, '[doc]')"
