@@ -4,3 +4,4 @@ flake8==7.0.0
 python-dotenv>=1.0.1
 faker>=25.0.0
 gunicorn>=22.0.0
+whitenoise==6.6.0
