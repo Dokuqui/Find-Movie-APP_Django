@@ -81,7 +81,14 @@ jobs:
       - name: Generate coverage report
         run: |
           coverage report -m
+          coverage xml -o coverage.xml
         continue-on-error: true
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
 
   deploy:
     if: "!contains(github.event.head_commit.message, '[doc]')"
