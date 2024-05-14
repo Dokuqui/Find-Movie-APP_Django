@@ -12,15 +12,16 @@
         <div class="logo">
             <a href="{% url 'home' %}">
                 <img src="{% static 'images/logo.png' %}" alt="Film Hunt">
-                Film Hunt
             </a>
+        </div>
+        <div class="title">
+            <h1>Film Hunt</h1>
         </div>
         <ul>
             <li><a href="{% url 'usage' %}">Use</a></li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
     </nav>
-    <h1>Find Your Movie</h1>
     <form method="POST">
         {% csrf_token %}
         <label for="title">Enter Movie Title:</label><br>
