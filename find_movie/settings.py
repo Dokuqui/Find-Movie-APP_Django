@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("IS_DEBUG")
 
-ALLOWED_HOSTS = ['film-hunt-f004e0776df0.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['film-hunt-f004e0776df0.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
