@@ -143,11 +143,15 @@ GOOGLE_PASSWORD = os.getenv("GMAIL_PASSWORD")
 EMAIL_HOST_PASSWORD = GOOGLE_PASSWORD
 
 # CORS
-CORS_ALLOWED_ORIGINS = [os.getenv("CORS_ALLOWED_ORIGINS")]
+CORS_ALLOWED_ORIGINS = [
+    os.getenv('CORS_ALLOWED_ORIGIN', 'https://film-hunt-f004e0776df0.herokuapp.com'),
+]
 
 # CSRF
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN")
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+CSRF_COOKIE_DOMAIN = os.getenv('CSRF_COOKIE_DOMAIN', '.herokuapp.com')
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv('CSRF_TRUSTED_ORIGIN', 'https://film-hunt-f004e0776df0.herokuapp.com'),
+]
