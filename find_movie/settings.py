@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("IS_DEBUG")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = ['film-hunt-f004e0776df0.herokuapp.com','127.0.0.1','localhost']
 
 
 # Application definition
@@ -151,7 +151,7 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_COOKIE_DOMAIN = os.getenv('CSRF_COOKIE_DOMAIN', '.herokuapp.com')
+CSRF_COOKIE_DOMAIN = '.herokuapp.com'
 CSRF_TRUSTED_ORIGINS = [
-    os.getenv('CSRF_TRUSTED_ORIGIN', 'https://film-hunt-f004e0776df0.herokuapp.com'),
+    'https://film-hunt-f004e0776df0.herokuapp.com'
 ]
