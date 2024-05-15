@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/dev.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -59,14 +59,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/dev.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements/dev.txt
 
       - name: Set up test database
         run: |
@@ -99,13 +99,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache pip
-        uses: actions/cache@v2
+      - name: Reuse Python setup
+        uses: actions/setup-python@v5
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/prod.txt
 
       - uses: akhileshns/heroku-deploy@v3.13.15
         with:

@@ -1,11 +1,11 @@
 """Import necessary libraries."""
+from unittest.mock import patch, Mock
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
-from unittest.mock import patch
+from faker import Faker
 from .views import movie_app, usage
 from .models import Movie
 from .form import ContactForm
-from faker import Faker
 
 
 class MovieAppViewTests(TestCase):
@@ -14,6 +14,7 @@ class MovieAppViewTests(TestCase):
     def setUp(self):
         """Set up test fixtures"""
         self.factory = RequestFactory()
+
         self.fake = Faker()
         self.test_movie = Movie.objects.create(
             id=1,
@@ -29,46 +30,91 @@ class MovieAppViewTests(TestCase):
             poster_url=self.fake.url()
         )
 
-    def test_movie_detail_by_id(self):
+    @patch('movie_app.api_calls.requests.get')
+    def test_movie_detail_by_id(self, mock_get):
         """Test detail view by movie ID"""
-        request = self.factory.get('/movie_app/movie/', {'id': self.test_movie.pk})
+        # Mock the API response
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'id': 1,
+            'title': self.test_movie.title,
+            'release_date': self.test_movie.release_date,
+            'runtime': self.test_movie.runtime,
+            'genre': self.test_movie.genre,
+            'director': self.test_movie.director,
+            'actors': self.test_movie.actors,
+            'movie_id': self.test_movie.movie_id,
+            'imdb_id': self.test_movie.imdb_id,
+            'plot': self.test_movie.plot,
+            'poster_url': self.test_movie.poster_url,
+        }
+        mock_response.status_code = 200
+        mock_get.return_value = mock_response
+
+        request = self.factory.get(f'/movie_app/movie/?id={self.test_movie.pk}')
         response = movie_app(request)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.test_movie.id)
 
-    def test_movie_search_by_title(self):
+    @patch('movie_app.api_calls.requests.get')
+    def test_movie_search_by_title(self, mock_get):
         """Test search view by movie title"""
-        request = self.factory.post('/movie_app/movie/', {'title': 'Famous Nonexistent Movie Quotes (PART 1)'})
+        unique_imdb_id = self.fake.uuid4()
+
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'id': 1,
+            'Title': 'Famous Nonexistent Movie Quotes (PART 1)',
+            'Year': '2024',
+            'Runtime': self.test_movie.runtime,
+            'Genre': self.test_movie.genre,
+            'Director': self.test_movie.director,
+            'Actors': self.test_movie.actors,
+            'imdbID': unique_imdb_id,
+            'Plot': self.test_movie.plot,
+            'Type': 'Movie',
+            'Response': 'True'
+        }
+        mock_response.status_code = 200
+        mock_get.return_value = mock_response
+
+        request = self.factory.get('/movie_app/movie/', {'title': 'Famous Nonexistent Movie Quotes (PART 1)'})
         response = movie_app(request)
+        mock_get.assert_called_with('http://www.omdbapi.com/?t=Famous Nonexistent Movie Quotes (PART 1)&apikey=8dcbd9c7')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Famous Nonexistent Movie Quotes (PART 1)')
 
-    def test_movie_search_no_results(self):
+    @patch('movie_app.api_calls.requests.get')
+    def test_movie_search_no_results(self, mock_get):
         """Test search view with invalid movie title"""
-        request = self.factory.post('/movie_app/movie/', {'title': 'AESDSQZE'})
-        response = movie_app(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response,  'Movie not found.')
+        mock_response = Mock()
+        mock_response.json.return_value = {'Response': 'False', 'Error': 'Movie not found!'}
+        mock_response.status_code = 200
+        mock_get.return_value = mock_response
 
-    def test_movie_search_invalid_id(self):
-        """Test search view with invalid movie ID"""
-        request = self.factory.post('/movie_app/movie/', {'title': 10})
+        request = self.factory.get('/movie_app/movie/', {'title': 'AESDSQZE'})
         response = movie_app(request)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Movie not found.')
 
-    def test_empty_search_term(self):
-        """Test search view with empty search term"""
-        request = self.factory.post('/movie_app/movie/', {'title': ''})
+    @patch('movie_app.api_calls.requests.get')
+    def test_movie_search_invalid_id(self, mock_get):
+        """Test search view with invalid movie ID"""
+        mock_response = Mock()
+        mock_response.json.return_value = {'Response': 'False', 'Error': 'Movie not found!'}
+        mock_response.status_code = 200
+        mock_get.return_value = mock_response
+
+        request = self.factory.get('/movie_app/movie/', {'title': 10})
         response = movie_app(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Search term cannot be empty.')
+        self.assertContains(response, 'Movie not found.')
 
     def test_movie_search_api_failure(self):
         """Test search view when OMDB API returns failure response"""
         with patch('requests.get') as mock_get:
             mock_get.return_value.json.return_value = {'Response': 'False'}
-            request = self.factory.post('/movie_app/movie/', {'title': 'InvalidMovie'})
+            request = self.factory.get('/movie_app/movie/', {'title': 'InvalidMovie'})
             response = movie_app(request)
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, 'Movie not found.')

@@ -22,7 +22,7 @@
             <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
     </nav>
-    <form method="POST">
+    <form method="GET">
         {% csrf_token %}
         <label for="title">Enter Movie Title:</label><br>
         <input type="text" id="title" name="title" placeholder="ex. Star Wars" required><br><br>
