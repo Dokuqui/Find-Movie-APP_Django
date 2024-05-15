@@ -5,8 +5,8 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-COPY requirements/dev.txt /app/
-RUN pip install -r dev.txt
+COPY requirements/prod.txt /app/
+RUN pip install -r prod.txt
 
 COPY . /app
 
