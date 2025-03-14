@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET", "fallback-secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("IS_DEBUG")
 
-ALLOWED_HOSTS = ['20.199.24.85', 'localhost', '127.0.0.1', '20.199.24.85:8000']
+ALLOWED_HOSTS = ['20.199.24.85', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -144,16 +144,16 @@ EMAIL_HOST_PASSWORD = GOOGLE_PASSWORD
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
-    os.getenv('CORS_ALLOWED_ORIGIN', 'http://20.199.24.85'),
+    "http://20.199.24.85",
 ]
 
 # CSRF
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
-CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN")
+CSRF_COOKIE_DOMAIN = "20.199.24.85"
 CSRF_TRUSTED_ORIGINS = [
-    'http://20.199.24.85'
+    'http://20.199.24.85',
 ]
 
 SECURE_SSL_REDIRECT = False
