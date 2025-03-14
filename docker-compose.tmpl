@@ -2,8 +2,6 @@ services:
   web:
     image: ghcr.io/dokuqui/find-movie-app_django/find-movie:latest
     command: gunicorn find_movie.wsgi:application --bind 0.0.0.0:8000
-    volumes:
-      - .:/app
     ports:
       - "8000:8000"
     environment:
@@ -20,4 +18,4 @@ services:
   db:
     image: nouchka/sqlite3:latest
     volumes:
-      - ./db.sqlite3:/app/db.sqlite3
+      - ./db.sqlite3:/data/db.sqlite3
