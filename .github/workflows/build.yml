@@ -47,6 +47,8 @@ jobs:
     needs: [ build, lint ]
     env:
       OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+      ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+      DJANGO_SECRET: ${{ secrets.DJANGO_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
