@@ -138,7 +138,7 @@ jobs:
           echo "CSRF_COOKIE_DOMAIN=${{ secrets.CSRF_COOKIE_DOMAIN }}" >> $GITHUB_ENV
           echo "CSRF_TRUSTED_ORIGIN=${{ secrets.CSRF_TRUSTED_ORIGIN }}" >> $GITHUB_ENV
           envsubst < docker-compose.tmpl > docker-compose.yml
-          docker-compose up -d --build
+          docker compose up -d --build
 
       - name: Verify deployment
         run: |
@@ -155,9 +155,9 @@ jobs:
             set -e
             cd /home/$SSH_USER/$CI_PROJECT_NAME
                 
-            sudo docker-compose pull
+            sudo docker compose pull
           
-            sudo docker-compose up -d --build
+            sudo docker compose up -d --build
             EOF
 
       - name: Verify deployment
