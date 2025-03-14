@@ -107,7 +107,7 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       CSRF_COOKIE_DOMAIN: ${{ secrets.CSRF_COOKIE_DOMAIN }}
       CSRF_TRUSTED_ORIGIN: ${{ secrets.CSRF_TRUSTED_ORIGIN }}
-      IS_DEBUG: ${{ IS_DEBUG }}
+      IS_DEBUG: ${{ secrets.IS_DEBUG }}
 
     steps:
       - uses: actions/checkout@v4
