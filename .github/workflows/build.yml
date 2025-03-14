@@ -125,11 +125,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/find-movie:latest .
+          docker build -t find-movie:latest .
 
       - name: Push Docker Image
         run: |
-          docker push ghcr.io/${{ github.repository }}/find-movie:latest
+          docker push find-movie:latest
 
       - name: Setup SSH keys
         run: |
