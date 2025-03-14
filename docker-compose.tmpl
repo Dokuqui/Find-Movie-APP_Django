@@ -12,6 +12,7 @@ services:
       - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN}
       - CSRF_COOKIE_DOMAIN=${CSRF_COOKIE_DOMAIN}
       - CSRF_TRUSTED_ORIGIN=${CSRF_TRUSTED_ORIGIN}
+      - OMDB_API_KEY=${OMDB_API_KEY}
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
