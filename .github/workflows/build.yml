@@ -117,9 +117,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements/prod.txt
 
-      - name: Build Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Packages
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker Image
         run: |
-          docker build -t find-movie .
+          docker build -t ghcr.io/${{ github.repository }}/find-movie:latest .
+
+      - name: Push Docker Image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/find-movie:latest
 
       - name: Setup SSH keys
         run: |
@@ -154,6 +164,8 @@ jobs:
             ssh -o StrictHostKeyChecking=no -T -i ~/.ssh/id_rsa "$SSH_USER@$SSH_HOST" << EOF
             set -e
             cd /home/$SSH_USER/$CI_PROJECT_NAME
+          
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
                 
             sudo docker compose pull
           
