@@ -92,9 +92,12 @@ jobs:
 
   deploy:
     if: "!contains(github.event.head_commit.message, '[doc]')"
-    name: Deploy on Heroku
+    name: Deploy on Azure VM
     runs-on: ubuntu-latest
     needs: [lint, test]
+
+    env:
+      CI_PROJECT_NAME: ${{ github.repository }}
 
     steps:
       - uses: actions/checkout@v4
@@ -109,9 +112,49 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements/prod.txt
 
-      - uses: akhileshns/heroku-deploy@v3.13.15
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "film-hunt"
-          heroku_email: "doku_isv@icloud.com"
-          usedocker: true
+      - name: Build Docker
+        run: |
+          docker build -t find-movie .
+
+      - name: Setup SSH keys
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Run Docker Compose
+        run: |
+          echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET }}" >> $GITHUB_ENV
+          echo "IS_DEBUG=${{ secrets.IS_DEBUG }}" >> $GITHUB_ENV
+          echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> $GITHUB_ENV
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "CORS_ALLOWED_ORIGIN=${{ secrets.CORS_ALLOWED_ORIGIN }}" >> $GITHUB_ENV
+          echo "CSRF_COOKIE_DOMAIN=${{ secrets.CSRF_COOKIE_DOMAIN }}" >> $GITHUB_ENV
+          echo "CSRF_TRUSTED_ORIGIN=${{ secrets.CSRF_TRUSTED_ORIGIN }}" >> $GITHUB_ENV
+          envsubst < docker-compose.tmpl > docker-compose.yml
+          docker-compose up -d --build
+
+      - name: Verify deployment
+        run: |
+          docker ps
+
+      - name: Copy Docker Compose to Azure VM
+        run: |
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "$SSH_USER@$SSH_HOST" "mkdir -p /home/$SSH_USER/$CI_PROJECT_NAME"
+            scp -P "$SSH_PORT" docker-compose.yml "$SSH_USER@$SSH_HOST:/home/$SSH_USER/$CI_PROJECT_NAME"
+
+      - name: SSH into Azure VM and deploy
+        run: |
+            ssh -o StrictHostKeyChecking=no -T -i ~/.ssh/id_rsa "$SSH_USER@$SSH_HOST" << EOF
+            set -e
+            cd /home/$SSH_USER/$CI_PROJECT_NAME
+                
+            sudo docker-compose pull
+          
+            sudo docker-compose up -d --build
+            EOF
+
+      - name: Verify deployment
+        run: |
+            ssh -o StrictHostKeyChecking=no -T -i ~/.ssh/id_rsa "$SSH_USER@$SSH_HOST" "docker ps"

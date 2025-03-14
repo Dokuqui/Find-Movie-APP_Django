@@ -1,0 +1,23 @@
+services:
+  web:
+    build: .
+    command: gunicorn find_movie.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET}
+      - IS_DEBUG=${IS_DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DATABASE_URL=${DATABASE_URL}
+      - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN}
+      - CSRF_COOKIE_DOMAIN=${CSRF_COOKIE_DOMAIN}
+      - CSRF_TRUSTED_ORIGIN=${CSRF_TRUSTED_ORIGIN}
+    depends_on:
+      - db
+
+  db:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3

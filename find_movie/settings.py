@@ -16,12 +16,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ms%p7o4k@nn6j(==%#4g!sh40q##jvy&3s)lr5y=3!i*emhlce"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "fallback-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("IS_DEBUG")
 
-ALLOWED_HOSTS = ['film-hunt-f004e0776df0.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
@@ -144,14 +144,14 @@ EMAIL_HOST_PASSWORD = GOOGLE_PASSWORD
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
-    os.getenv('CORS_ALLOWED_ORIGIN', 'https://film-hunt-f004e0776df0.herokuapp.com'),
+    os.getenv('CORS_ALLOWED_ORIGIN', 'http://20.199.24.85'),
 ]
 
 # CSRF
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_COOKIE_DOMAIN = '.herokuapp.com'
+CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN")
 CSRF_TRUSTED_ORIGINS = [
-    'https://film-hunt-f004e0776df0.herokuapp.com'
+    'http://20.199.24.85'
 ]

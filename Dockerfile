@@ -14,4 +14,4 @@ RUN python manage.py collectstatic --noinput
 
 RUN python manage.py migrate
 
-CMD gunicorn find_movie.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn find_movie.wsgi:application --bind 0.0.0.0:8000
