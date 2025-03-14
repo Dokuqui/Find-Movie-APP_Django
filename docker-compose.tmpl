@@ -1,6 +1,6 @@
 services:
   web:
-    build: .
+    image: find-movie
     command: gunicorn find_movie.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
