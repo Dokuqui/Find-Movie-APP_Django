@@ -12,6 +12,15 @@ services:
       - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN}
       - CSRF_COOKIE_DOMAIN=${CSRF_COOKIE_DOMAIN}
       - CSRF_TRUSTED_ORIGIN=${CSRF_TRUSTED_ORIGIN}
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - db_volume:/app/db.sqlite3
+
+volumes:
+  static_volume:
+  media_volume:
+  db_volume:
 
 volumes:
   db-data:

@@ -108,6 +108,8 @@ jobs:
       CSRF_COOKIE_DOMAIN: ${{ secrets.CSRF_COOKIE_DOMAIN }}
       CSRF_TRUSTED_ORIGIN: ${{ secrets.CSRF_TRUSTED_ORIGIN }}
       IS_DEBUG: ${{ secrets.IS_DEBUG }}
+      ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+      CORS_ALLOWED_ORIGIN: ${{ secrets.CORS_ALLOWED_ORIGIN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -147,9 +149,9 @@ jobs:
         run: |
           echo "DJANGO_SECRET_KEY=$DJANGO_SECRET" >> $GITHUB_ENV
           echo "IS_DEBUG=$IS_DEBUG" >> $GITHUB_ENV
-          echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> $GITHUB_ENV
+          echo "ALLOWED_HOSTS=$ALLOWED_HOSTS" >> $GITHUB_ENV
           echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
-          echo "CORS_ALLOWED_ORIGIN=${{ secrets.CORS_ALLOWED_ORIGIN }}" >> $GITHUB_ENV
+          echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> $GITHUB_ENV
           echo "CSRF_COOKIE_DOMAIN=$CSRF_COOKIE_DOMAIN" >> $GITHUB_ENV
           echo "CSRF_TRUSTED_ORIGIN=$CSRF_TRUSTED_ORIGIN" >> $GITHUB_ENV
           envsubst < docker-compose.tmpl > docker-compose.yml
