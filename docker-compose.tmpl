@@ -12,8 +12,6 @@ services:
       - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN}
       - CSRF_COOKIE_DOMAIN=${CSRF_COOKIE_DOMAIN}
       - CSRF_TRUSTED_ORIGIN=${CSRF_TRUSTED_ORIGIN}
-    depends_on:
-      - db
 
 volumes:
   db-data:
