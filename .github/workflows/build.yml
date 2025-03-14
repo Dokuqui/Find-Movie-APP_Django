@@ -100,7 +100,6 @@ jobs:
 
     env:
       CI_PROJECT_NAME: ${{ github.repository }}
-      ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
 
     steps:
       - uses: actions/checkout@v4
