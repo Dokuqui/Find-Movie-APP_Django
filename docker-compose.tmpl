@@ -1,7 +1,7 @@
 services:
   web:
     image: ghcr.io/dokuqui/find-movie-app_django/find-movie:latest
-    command: python manage.py migrate && gunicorn find_movie.wsgi:application --bind 0.0.0.0:8000
+    command: /app/entrypoint.sh
     ports:
       - "8000:8000"
     environment:
@@ -15,7 +15,7 @@ services:
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-      - db_volume:/app
+      - db_volume:/app/data
 
 volumes:
   static_volume:
